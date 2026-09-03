@@ -73,9 +73,11 @@ class _ProgresionEnVivoPageState extends State<ProgresionEnVivoPage> {
 
     try {
       await _capturador.iniciar();
-      _capturador.onAmplitud = (e) {
-        if (mounted) setState(() => _amplitud = e);
-      };
+      // Sin setState acá: el callback de audio llega cada ~85ms y disparar un
+      // rebuild de toda la página a esa frecuencia era lo que la trababa. El
+      // valor se guarda y el setState de _verificarPaso (cada 200ms) alcanza
+      // de sobra para que el medidor de nivel se vea fluido.
+      _capturador.onAmplitud = (e) => _amplitud = e;
       _capturador.onVentana = (audio) => _ventanaActual = audio;
       await _capturador.grabar();
       if (!mounted) return;
@@ -174,7 +176,11 @@ class _ProgresionEnVivoPageState extends State<ProgresionEnVivoPage> {
     final acierto = _avanzando || (_ultimoResultado?.acierto ?? false);
     final puntuacion = _ultimoResultado?.puntuacion ?? 0.0;
 
-    return Padding(
+    // Scrollable a propósito: en pantallas chicas o con la fuente del
+    // sistema agrandada, el diagrama más las dos barras más la perilla no
+    // entran todas en alto fijo — sin esto, la perilla quedaba recortada
+    // fuera de la pantalla y parecía no existir.
+    return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Column(
         children: [
@@ -249,7 +255,7 @@ class _ProgresionEnVivoPageState extends State<ProgresionEnVivoPage> {
               ),
             ],
           ),
-          const Spacer(),
+          const SizedBox(height: 8),
         ],
       ),
     );
