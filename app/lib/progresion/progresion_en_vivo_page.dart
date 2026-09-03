@@ -28,8 +28,15 @@ const _aciertosParaAvanzar = 2;
 const _periodoVerificacion = Duration(milliseconds: 200);
 const _pausaTrasAcierto = Duration(milliseconds: 600);
 
+/// El verificador promedia el croma de toda la ventana móvil: cuanto más
+/// larga, más tarda en "vaciarse" el acorde anterior cuando cambiás de uno a
+/// otro. 0.6s todavía deja un par de cuadros del cromagrama (que ya de por sí
+/// usa ventanas de ~370ms) para promediar, pero reacciona bastante más rápido
+/// que un segundo y medio — clave para un acorde staccato, que dura poco.
+const _segundosVentana = 0.6;
+
 class _ProgresionEnVivoPageState extends State<ProgresionEnVivoPage> {
-  final _capturador = CapturadorMic(segundosVentana: 1.5);
+  final _capturador = CapturadorMic(segundosVentana: _segundosVentana);
   static const _verificador = VerificadorDeVoicing();
 
   Audio? _ventanaActual;
