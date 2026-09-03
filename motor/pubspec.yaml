@@ -1,0 +1,11 @@
+name: motor_acordes
+description: Motor de reconocimiento de acordes. Dart puro, sin Flutter, para que corra bajo dart test contra el corpus y se embarque tal cual en la app.
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dev_dependencies:
+  test: ^1.24.0
+  lints: ^3.0.0

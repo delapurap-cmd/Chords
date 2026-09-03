@@ -1,0 +1,22 @@
+# Dart
+.dart_tool/
+.packages
+build/
+pubspec.lock
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Audio del corpus: pesado y con derechos. Los .lab sí se suben.
+corpus/*.wav
+corpus/*.mp3
+corpus/*.m4a
+corpus/*.flac
+corpus_falso/
+salidas/
+
+# Modelos exportados: se regeneran desde el laboratorio.
+*.tflite
+*.onnx

@@ -1,0 +1,23 @@
+# Evaluación. Esto es lo único imprescindible.
+mir_eval>=0.7
+numpy>=1.24
+soundfile>=0.12
+
+# Análisis de audio: base de casi todo lo demás.
+librosa>=0.10
+
+# Candidatos a reconocedor. Se instalan a medida que se quieran probar; los
+# que falten se saltan solos en comparar.py.
+#
+# madmom: CNN+CRF para acordes y el mejor seguimiento de beats que hay.
+#   Compila extensiones y es tiquismiquis con la versión de numpy.
+#   Revisa sus condiciones de uso comercial antes de apoyarte en él.
+# madmom>=0.16.1
+
+# crema: modelo preentrenado de McFee, vocabulario más amplio que mayor/menor.
+# crema>=0.2.0
+
+# Separación de fuentes. Quitar batería y voz antes de analizar ataca justo la
+# razón por la que las mezclas completas son difíciles. Pesa, pero merece
+# estar en el banco de pruebas desde el principio para saber cuánto da.
+# demucs>=4.0.0
