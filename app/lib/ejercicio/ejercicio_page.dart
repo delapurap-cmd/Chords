@@ -6,6 +6,7 @@ import 'package:motor_acordes/motor_acordes.dart';
 import '../captura/capturador_mic.dart';
 import '../catalogo_service.dart';
 import '../permiso_mic.dart';
+import '../progresion/progresion_menu_page.dart';
 import 'diagrama_voicing.dart';
 
 enum _Estado { cargando, listo, grabando, evaluando }
@@ -109,7 +110,18 @@ class _EjercicioPageState extends State<EjercicioPage> {
     final evaluando = _estado == _Estado.evaluando;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Chords — verificación')),
+      appBar: AppBar(
+        title: const Text('Chords — verificación'),
+        actions: [
+          IconButton(
+            tooltip: 'Progresiones',
+            icon: const Icon(Icons.queue_music),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const ProgresionMenuPage()),
+            ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),

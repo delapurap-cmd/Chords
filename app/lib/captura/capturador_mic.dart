@@ -8,9 +8,18 @@ import 'package:motor_acordes/motor_acordes.dart';
 /// No pasa por un WAV en disco: aquí no hace falta guardar nada, solo
 /// verificar en el momento, así que las muestras se acumulan en memoria y se
 /// devuelven tal cual las entiende el motor.
+///
+/// Dos modos, según [segundosVentana]:
+/// - sin dar (por defecto): graba la toma entera, sin límite — lo que usa el
+///   ejercicio manual de "grabar y parar".
+/// - con [segundosVentana]: recorta a una ventana móvil de esa duración y
+///   llama a [onVentana] en cada bloque — lo que hace falta para verificar en
+///   vivo mientras se sigue tocando, sin parar de grabar entre acorde y
+///   acorde.
 class CapturadorMic {
   final FlutterAudioCapture _captura = FlutterAudioCapture();
   final int frecuenciaPedida;
+  final int? _maxMuestras;
   final List<double> _muestras = [];
   bool _grabando = false;
   double? _frecuenciaReal;
@@ -18,7 +27,14 @@ class CapturadorMic {
   /// Pico de amplitud del último bloque recibido, para un medidor de nivel.
   void Function(double energia)? onAmplitud;
 
-  CapturadorMic({this.frecuenciaPedida = 48000});
+  /// Ventana móvil de audio acumulada hasta ahora. Solo se dispara si se
+  /// construyó con [segundosVentana].
+  void Function(Audio ventana)? onVentana;
+
+  CapturadorMic({this.frecuenciaPedida = 48000, double? segundosVentana})
+      : _maxMuestras = segundosVentana == null
+            ? null
+            : (frecuenciaPedida * segundosVentana).round();
 
   Future<void> iniciar() => _captura.init();
 
@@ -46,7 +62,19 @@ class CapturadorMic {
       final abs = muestra.abs();
       if (abs > pico) pico = abs;
     }
+
+    final tope = _maxMuestras;
+    if (tope != null) {
+      final exceso = _muestras.length - tope;
+      if (exceso > 0) _muestras.removeRange(0, exceso);
+    }
+
     onAmplitud?.call(pico);
+    final ventana = onVentana;
+    if (ventana != null) {
+      final frecuencia = (_frecuenciaReal ?? frecuenciaPedida.toDouble()).round();
+      ventana(Audio(Float64List.fromList(_muestras), frecuencia));
+    }
   }
 
   /// Detiene la captura y devuelve lo grabado como [Audio]. La frecuencia es
@@ -54,6 +82,7 @@ class CapturadorMic {
   /// — algunos micrófonos la ignoran.
   Future<Audio> detener() async {
     onAmplitud = null;
+    onVentana = null;
     if (!_grabando) return Audio(Float64List(0), frecuenciaPedida);
     try {
       await _captura.stop();
@@ -65,6 +94,7 @@ class CapturadorMic {
 
   void dispose() {
     onAmplitud = null;
+    onVentana = null;
     if (_grabando) {
       _grabando = false;
       _captura.stop().catchError((_) {});
