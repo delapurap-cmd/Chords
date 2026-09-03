@@ -13,5 +13,7 @@ export 'src/harte.dart';
 export 'src/lab.dart';
 export 'src/motor.dart';
 export 'src/plantillas.dart';
+export 'src/verificacion.dart';
 export 'src/viterbi.dart';
+export 'src/voicing.dart';
 export 'src/wav.dart';
