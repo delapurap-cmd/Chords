@@ -37,7 +37,11 @@ const _segundosVentana = 0.6;
 
 class _ProgresionEnVivoPageState extends State<ProgresionEnVivoPage> {
   final _capturador = CapturadorMic(segundosVentana: _segundosVentana);
-  static const _verificador = VerificadorDeVoicing();
+
+  /// Umbral de aceptación, ajustable en vivo con la perilla — el 0.85 por
+  /// defecto de VerificadorDeVoicing salió calibrado contra el catálogo
+  /// sintético, no contra guitarra real ni contra todos los micrófonos.
+  double _umbral = 0.85;
 
   Audio? _ventanaActual;
   Timer? _temporizador;
@@ -87,7 +91,7 @@ class _ProgresionEnVivoPageState extends State<ProgresionEnVivoPage> {
     final ventana = _ventanaActual;
     if (_avanzando || actual == null || ventana == null) return;
 
-    final resultado = _verificador.verificar(ventana, actual.voicing);
+    final resultado = VerificadorDeVoicing(umbral: _umbral).verificar(ventana, actual.voicing);
     if (resultado.acierto) {
       _aciertosSeguidos++;
     } else {
@@ -220,6 +224,30 @@ class _ProgresionEnVivoPageState extends State<ProgresionEnVivoPage> {
               value: _amplitud.clamp(0.0, 1.0),
               minHeight: 3,
             ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              const Icon(Icons.tune, size: 18, color: Colors.white54),
+              Expanded(
+                child: Slider(
+                  value: _umbral,
+                  min: 0.5,
+                  max: 0.97,
+                  divisions: 47,
+                  label: '${(_umbral * 100).round()}%',
+                  onChanged: (v) => setState(() => _umbral = v),
+                ),
+              ),
+              SizedBox(
+                width: 44,
+                child: Text(
+                  '${(_umbral * 100).round()}%',
+                  textAlign: TextAlign.end,
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+              ),
+            ],
           ),
           const Spacer(),
         ],
