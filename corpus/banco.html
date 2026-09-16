@@ -1,0 +1,46 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Banco de pruebas</title>
+<!-- Página mínima para medir los motores fuera de la interfaz.
+     Carga exactamente los mismos ficheros que `web/reconocedor.html`: aquí no
+     hay una copia del motor, hay el motor. Si se toca `ia.js` o `clasico.js`,
+     la medida se entera al siguiente pase. -->
+<script src="/web/vendor/tf.min.js"></script>
+<script src="/web/ia.js"></script>
+<script src="/web/clasico.js"></script>
+<script>
+// El mismo decodificador que usa la página de verdad, copiado a propósito:
+// es la única parte que vive en el HTML y no en un módulo, y decodificar de
+// otra forma (ffmpeg, por ejemplo) mediría un audio que el usuario nunca oye.
+async function aPcm(bytes, fs) {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  try {
+    const buf = await ctx.decodeAudioData(bytes);
+    const off = new OfflineAudioContext(1, Math.max(1, Math.ceil(buf.duration * fs)), fs);
+    const src = off.createBufferSource();
+    src.buffer = buf; src.connect(off.destination); src.start();
+    return { pcm: (await off.startRendering()).getChannelData(0), dur: buf.duration };
+  } finally { ctx.close(); }
+}
+
+let listo = null;
+window.preparar = async function () {
+  if (!listo) listo = IA.cargar('/web/modelo/model.json');
+  await listo;
+  return true;
+};
+
+window.correr = async function (url, motor) {
+  const bytes = await (await fetch(url)).arrayBuffer();
+  const t0 = performance.now();
+  if (motor === 'ia') {
+    const { pcm, dur } = await aPcm(bytes.slice(0), 22050);
+    const r = await IA.reconocer(pcm, null);
+    return { tramos: r.tramos, dur, ms: performance.now() - t0 };
+  }
+  const { pcm, dur } = await aPcm(bytes.slice(0), Clasico.A.fs);
+  const tramos = await Clasico.analizar(pcm, () => {});
+  return { tramos, dur, ms: performance.now() - t0 };
+};
+</script>
+<p>Banco de pruebas. Se maneja desde <code>evaluar.mjs</code>.</p>

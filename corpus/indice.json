@@ -1,0 +1,797 @@
+{
+ "segPorCompas": 2.405,
+ "pistas": [
+  {
+   "lab": "bossa-1.lab",
+   "audio": "bossa - 1.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "bossa-2.lab",
+   "audio": "bossa - 2.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "bossa-3.lab",
+   "audio": "bossa - 3.mp3",
+   "album": "bossanova",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 8
+  },
+  {
+   "lab": "bossa-4.lab",
+   "audio": "bossa - 4.mp3",
+   "album": "bossanova",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 8
+  },
+  {
+   "lab": "bossa-6.lab",
+   "audio": "bossa - 6.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "bossa-7.lab",
+   "audio": "bossa - 7.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "bossa-9.lab",
+   "audio": "bossa - 9.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 2
+  },
+  {
+   "lab": "bossa-11.lab",
+   "audio": "bossa - 11.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "bossa-12.lab",
+   "audio": "bossa - 12.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "bossa-13.lab",
+   "audio": "bossa - 13.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 2
+  },
+  {
+   "lab": "bossa-14.lab",
+   "audio": "bossa - 14.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "bossa-16.lab",
+   "audio": "bossa - 16.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 1
+  },
+  {
+   "lab": "bossa-17.lab",
+   "audio": "bossa - 17.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "bossa-18.lab",
+   "audio": "bossa - 18.mp3",
+   "album": "bossanova",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "funk-1.lab",
+   "audio": "funk - 1.mp3",
+   "album": "funk",
+   "duracion": 4.824,
+   "compases": 2,
+   "acordes": 1
+  },
+  {
+   "lab": "funk-2.lab",
+   "audio": "funk - 2.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "funk-3.lab",
+   "audio": "funk - 3.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "funk-4.lab",
+   "audio": "funk - 4.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "funk-6.lab",
+   "audio": "funk - 6.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 6
+  },
+  {
+   "lab": "funk-7.lab",
+   "audio": "funk - 7.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 8
+  },
+  {
+   "lab": "funk-8.lab",
+   "audio": "funk - 8.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 6
+  },
+  {
+   "lab": "funk-9.lab",
+   "audio": "funk - 9.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 8
+  },
+  {
+   "lab": "funk-10.lab",
+   "audio": "funk - 10.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "funk-11.lab",
+   "audio": "funk - 11.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "funk-12.lab",
+   "audio": "funk - 12.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "funk-13.lab",
+   "audio": "funk - 13.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 6
+  },
+  {
+   "lab": "funk-14.lab",
+   "audio": "funk - 14.mp3",
+   "album": "funk",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 8
+  },
+  {
+   "lab": "funk-16.lab",
+   "audio": "funk - 16.mp3",
+   "album": "funk",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 7
+  },
+  {
+   "lab": "funk-17.lab",
+   "audio": "funk - 17.mp3",
+   "album": "funk",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 8
+  },
+  {
+   "lab": "funk-18.lab",
+   "audio": "funk - 18.mp3",
+   "album": "funk",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 4
+  },
+  {
+   "lab": "funk-19.lab",
+   "audio": "funk - 19.mp3",
+   "album": "funk",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 8
+  },
+  {
+   "lab": "funk-21.lab",
+   "audio": "funk - 21.mp3",
+   "album": "funk",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 15
+  },
+  {
+   "lab": "funk-22.lab",
+   "audio": "funk - 22.mp3",
+   "album": "funk",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 8
+  },
+  {
+   "lab": "funk-23.lab",
+   "audio": "funk - 23.mp3",
+   "album": "funk",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 12
+  },
+  {
+   "lab": "jazz-loops-1.lab",
+   "audio": "jazz loops - 1.mp3",
+   "album": "jazz",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 1
+  },
+  {
+   "lab": "jazz-loops-3.lab",
+   "audio": "jazz loops - 3.mp3",
+   "album": "jazz",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "jazz-loops-4.lab",
+   "audio": "jazz loops - 4.mp3",
+   "album": "jazz",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "jazz-loops-5.lab",
+   "audio": "jazz loops - 5.mp3",
+   "album": "jazz",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 2
+  },
+  {
+   "lab": "jazz-loops-6.lab",
+   "audio": "jazz loops - 6.mp3",
+   "album": "jazz",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 8
+  },
+  {
+   "lab": "jazz-loops-7.lab",
+   "audio": "jazz loops - 7.mp3",
+   "album": "jazz",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "jazz-loops-8.lab",
+   "audio": "jazz loops - 8.mp3",
+   "album": "jazz",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 6
+  },
+  {
+   "lab": "jazz-loops-9.lab",
+   "audio": "jazz loops - 9.mp3",
+   "album": "jazz",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 2
+  },
+  {
+   "lab": "jazz-loops-10.lab",
+   "audio": "jazz loops - 10.mp3",
+   "album": "jazz",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "jazz-loops-11.lab",
+   "audio": "jazz loops - 11.mp3",
+   "album": "jazz",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "jazz-loops-12.lab",
+   "audio": "jazz loops - 12.mp3",
+   "album": "jazz",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 7
+  },
+  {
+   "lab": "jazz-loops-13.lab",
+   "audio": "jazz loops - 13.mp3",
+   "album": "jazz",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "metal-1.lab",
+   "audio": "metal - 1.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 2
+  },
+  {
+   "lab": "metal-2.lab",
+   "audio": "metal - 2.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "metal-3.lab",
+   "audio": "metal - 3.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "metal-4.lab",
+   "audio": "metal - 4.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "metal-5.lab",
+   "audio": "metal - 5.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "metal-6.lab",
+   "audio": "metal - 6.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "metal-7.lab",
+   "audio": "metal - 7.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 7
+  },
+  {
+   "lab": "metal-8.lab",
+   "audio": "metal - 8.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 1
+  },
+  {
+   "lab": "metal-9.lab",
+   "audio": "metal - 9.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 5
+  },
+  {
+   "lab": "metal-10.lab",
+   "audio": "metal - 10.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 1
+  },
+  {
+   "lab": "metal-11.lab",
+   "audio": "metal - 11.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 1
+  },
+  {
+   "lab": "metal-12.lab",
+   "audio": "metal - 12.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 1
+  },
+  {
+   "lab": "metal-13.lab",
+   "audio": "metal - 13.mp3",
+   "album": "metal",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 1
+  },
+  {
+   "lab": "metal-14.lab",
+   "audio": "metal - 14.mp3",
+   "album": "metal",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 7
+  },
+  {
+   "lab": "metal-15.lab",
+   "audio": "metal - 15.mp3",
+   "album": "metal",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 1
+  },
+  {
+   "lab": "metal-16.lab",
+   "audio": "metal - 16.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "metal-17.lab",
+   "audio": "metal - 17.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 5
+  },
+  {
+   "lab": "metal-18.lab",
+   "audio": "metal - 18.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 6
+  },
+  {
+   "lab": "metal-19.lab",
+   "audio": "metal - 19.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "metal-20.lab",
+   "audio": "metal - 20.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "metal-21.lab",
+   "audio": "metal - 21.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 1
+  },
+  {
+   "lab": "metal-22.lab",
+   "audio": "metal - 22.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "metal-23.lab",
+   "audio": "metal - 23.mp3",
+   "album": "metal",
+   "duracion": 4.824,
+   "compases": 2,
+   "acordes": 1
+  },
+  {
+   "lab": "metal-24.lab",
+   "audio": "metal - 24.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "metal-25.lab",
+   "audio": "metal - 25.mp3",
+   "album": "metal",
+   "duracion": 4.824,
+   "compases": 2,
+   "acordes": 1
+  },
+  {
+   "lab": "metal-26.lab",
+   "audio": "metal - 26.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "metal-27.lab",
+   "audio": "metal - 27.mp3",
+   "album": "metal",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 2
+  },
+  {
+   "lab": "reggae-1.lab",
+   "audio": "reggae - 1.mp3",
+   "album": "reggae",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "reggae-2.lab",
+   "audio": "reggae - 2.mp3",
+   "album": "reggae",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 5
+  },
+  {
+   "lab": "reggae-3.lab",
+   "audio": "reggae - 3.mp3",
+   "album": "reggae",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "reggae-4.lab",
+   "audio": "reggae - 4.mp3",
+   "album": "reggae",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "rock-1.lab",
+   "audio": "rock - 1.mp3",
+   "album": "rock",
+   "duracion": 2.424,
+   "compases": 1,
+   "acordes": 2
+  },
+  {
+   "lab": "rock-2.lab",
+   "audio": "rock - 2.mp3",
+   "album": "rock",
+   "duracion": 4.824,
+   "compases": 2,
+   "acordes": 2
+  },
+  {
+   "lab": "rock-3.lab",
+   "audio": "rock - 3.mp3",
+   "album": "rock",
+   "duracion": 4.824,
+   "compases": 2,
+   "acordes": 4
+  },
+  {
+   "lab": "rock-4.lab",
+   "audio": "rock - 4.mp3",
+   "album": "rock",
+   "duracion": 4.824,
+   "compases": 2,
+   "acordes": 1
+  },
+  {
+   "lab": "rock-5.lab",
+   "audio": "rock - 5.mp3",
+   "album": "rock",
+   "duracion": 7.224,
+   "compases": 3,
+   "acordes": 3
+  },
+  {
+   "lab": "rock-6.lab",
+   "audio": "rock - 6.mp3",
+   "album": "rock",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "rock-7.lab",
+   "audio": "rock - 7.mp3",
+   "album": "rock",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "rock-8.lab",
+   "audio": "rock - 8.mp3",
+   "album": "rock",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 5
+  },
+  {
+   "lab": "rock-9.lab",
+   "audio": "rock - 9.mp3",
+   "album": "rock",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 2
+  },
+  {
+   "lab": "rock-10.lab",
+   "audio": "rock - 10.mp3",
+   "album": "rock",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 6
+  },
+  {
+   "lab": "soul-1.lab",
+   "audio": "soul - 1.mp3",
+   "album": "soul",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 4
+  },
+  {
+   "lab": "soul-2.lab",
+   "audio": "soul - 2.mp3",
+   "album": "soul",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 4
+  },
+  {
+   "lab": "soul-4.lab",
+   "audio": "soul - 4.mp3",
+   "album": "soul",
+   "duracion": 19.224,
+   "compases": 8,
+   "acordes": 4
+  },
+  {
+   "lab": "soul-5.lab",
+   "audio": "soul - 5.mp3",
+   "album": "soul",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "soul-6.lab",
+   "audio": "soul - 6.mp3",
+   "album": "soul",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 3
+  },
+  {
+   "lab": "soul-7.lab",
+   "audio": "soul - 7.mp3",
+   "album": "soul",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 2
+  },
+  {
+   "lab": "soul-8.lab",
+   "audio": "soul - 8.mp3",
+   "album": "soul",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 7
+  },
+  {
+   "lab": "soul-9.lab",
+   "audio": "soul - 9.mp3",
+   "album": "soul",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "soul-10.lab",
+   "audio": "soul - 10.mp3",
+   "album": "soul",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 2
+  },
+  {
+   "lab": "soul-11.lab",
+   "audio": "soul - 11.mp3",
+   "album": "soul",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 4
+  },
+  {
+   "lab": "soul-12.lab",
+   "audio": "soul - 12.mp3",
+   "album": "soul",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 2
+  },
+  {
+   "lab": "soul-13.lab",
+   "audio": "soul - 13.mp3",
+   "album": "soul",
+   "duracion": 9.624,
+   "compases": 4,
+   "acordes": 1
+  }
+ ]
+}

@@ -19,7 +19,7 @@ await mkdir(salida, { recursive: true });
 await cp(resolve(raiz, 'web/reconocedor.html'), resolve(salida, 'index.html'));
 // La IA viaja dentro: el modelo (904 KB) y TensorFlow.js (1,5 MB). Eso es lo
 // que permite que haya red neuronal Y que el APK funcione en avión.
-for (const item of ['web/ia.js', 'web/vendor', 'web/modelo']) {
+for (const item of ['web/ia.js', 'web/clasico.js', 'web/vendor', 'web/modelo']) {
   await cp(resolve(raiz, item), resolve(salida, item.replace('web/', '')), { recursive: true });
 }
 

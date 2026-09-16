@@ -63,9 +63,9 @@ const IA = (function () {
       for (const iv of ivs) c[(r + iv) % 12] = 1;
       // La fundamental y la quinta pesan más: son las que sobreviven a la
       // mezcla, y con una red también son las que la voz menos enturbia.
-      c[r] = 1.3;
+      c[r] = AJ.pesoRaiz;
       const q = (r + 7) % 12;
-      if (ivs.indexOf(7) >= 0) c[q] = Math.max(c[q], 1.1);
+      if (ivs.indexOf(7) >= 0) c[q] = Math.max(c[q], AJ.pesoQuinta);
       norma(c);
       v.push({ harte: RAICES[r] + ':' + cal, mostrar: RAICES[r] + suf,
                croma: c, raiz: r, ivs });
@@ -126,15 +126,29 @@ const IA = (function () {
     return modelo;
   }
 
-  /** Notas por cuadro: [T][88] con la activación de cada nota. */
-  async function notas(pcm, avisa) {
+  /** Recorre la pista con el modelo y va plegando a croma según sale.
+
+      No se guardan las 88 notas de cada cuadro: en una canción de cinco
+      minutos son 25.000 cuadros × 88 valores, y como listas de JavaScript eso
+      se lleva por delante la memoria de un teléfono antes de la mitad. Aquí lo
+      que queda es un croma cada 93 ms —doce números— y el resto se tira en
+      cuanto se ha usado. El largo de la pista deja de importar. */
+  async function cromasDeLaRed(pcm, bloque, avisa) {
     const m = await cargar('modelo/model.json');
-    // Se rellena el principio para que el primer cuadro caiga donde debe.
     const relleno = SOLAPE / 2;
-    const largo = pcm.length + relleno;
     const paso = MUESTRAS - SOLAPE;
-    const nVentanas = Math.max(1, Math.ceil((largo - SOLAPE) / paso));
-    const fuera = [];
+    const nVentanas = Math.max(1, Math.ceil((pcm.length + relleno - SOLAPE) / paso));
+
+    const croma = [], bajo = [];
+    let acc = new Float32Array(12), accB = new Float32Array(12), enBloque = 0, nCuadros = 0;
+    const cerrar = () => {
+      let mx = 0; for (const x of acc) if (x > mx) mx = x;
+      if (mx > 1e-9) for (let k = 0; k < 12; k++) acc[k] /= mx;
+      let mb = 0; for (const x of accB) if (x > mb) mb = x;
+      if (mb > 1e-9) for (let k = 0; k < 12; k++) accB[k] /= mb;
+      croma.push(acc); bajo.push(accB);
+      acc = new Float32Array(12); accB = new Float32Array(12); enBloque = 0;
+    };
 
     /* Cuántas ventanas se le dan al modelo de una vez.
 
@@ -162,54 +176,43 @@ const IA = (function () {
           trozo[b * MUESTRAS + i] = j >= 0 && j < pcm.length ? pcm[j] : 0;
         }
       }
-      // `tidy` libera los tensores intermedios: sin esto una canción larga se
-      // come la memoria del teléfono antes de la mitad.
-      const salida = tf.tidy(() => {
+      // `tidy` libera los tensores intermedios, y `dataSync` da un buffer
+      // plano en vez de listas anidadas: menos basura que recoger.
+      const plano = tf.tidy(() => {
         const x = tf.tensor(trozo, [n, MUESTRAS, 1]);
         const y = m.execute({ input_2: x }, ['Identity_1']);
-        return (Array.isArray(y) ? y[0] : y).arraySync();
+        return (Array.isArray(y) ? y[0] : y).dataSync();
       });
+
       for (let b = 0; b < n; b++) {
         const w = w0 + b;
         // Los bordes de cada ventana los ve mal el modelo: se tiran, que para
         // eso las ventanas se solapan.
         const desde = w === 0 ? 0 : RECORTE;
         const hasta = w === nVentanas - 1 ? CUADROS : CUADROS - RECORTE;
-        for (let f = desde; f < hasta; f++) fuera.push(salida[b][f]);
+        for (let f = desde; f < hasta; f++) {
+          const base = (b * CUADROS + f) * 88;
+          for (let pIdx = 0; pIdx < 88; pIdx++) {
+            const v = plano[base + pIdx];
+            if (v < 0.15) continue;         // por debajo es ruido de la red
+            const midi = MIDI_BASE + pIdx;
+            // Al cuadrado: una nota clara pesa mucho más que tres dudosas.
+            acc[midi % 12] += v * v;
+            // Hasta do3 se considera registro de bajo, como en `motor/`.
+            if (midi < 48) accB[midi % 12] += v * v;
+          }
+          nCuadros++;
+          if (++enBloque >= bloque) cerrar();
+        }
       }
       if (avisa) avisa(Math.min(1, (w0 + n) / nVentanas));
       await new Promise((r) => setTimeout(r));
     }
-    return fuera;
+    if (enBloque) cerrar();
+    return { croma, bajo, nCuadros };
   }
 
   /* ── De notas a acordes ──────────────────────────────────────────────── */
-
-  /** Croma y croma de bajo, agregando cuadros de la red en bloques. */
-  function cromas(act, bloque) {
-    const T = act.length, out = [], bajos = [];
-    for (let i = 0; i < T; i += bloque) {
-      const c = new Float32Array(12), b = new Float32Array(12);
-      for (let f = i; f < Math.min(T, i + bloque); f++) {
-        const fila = act[f];
-        for (let p = 0; p < 88; p++) {
-          const v = fila[p];
-          if (v < 0.15) continue;           // por debajo es ruido de la red
-          const midi = MIDI_BASE + p;
-          // Al cuadrado: una nota clara pesa mucho más que tres dudosas.
-          c[midi % 12] += v * v;
-          // Hasta do3 se considera registro de bajo, como en `motor/`.
-          if (midi < 48) b[midi % 12] += v * v;
-        }
-      }
-      let mx = 0; for (const x of c) if (x > mx) mx = x;
-      if (mx > 1e-9) for (let k = 0; k < 12; k++) c[k] /= mx;
-      let mb = 0; for (const x of b) if (x > mb) mb = x;
-      if (mb > 1e-9) for (let k = 0; k < 12; k++) b[k] /= mb;
-      out.push(c); bajos.push(b);
-    }
-    return { croma: out, bajo: bajos };
-  }
 
   function coseno(a, b) {
     let p = 0, na = 0;
@@ -260,16 +263,17 @@ const IA = (function () {
     temperatura: 0.08,
     permanencia: 0.96,
     umbralSilencio: 0.04, // por debajo de esto, la red no ve nada tocando
+    pesoRaiz: 1.3,        // cuánto pesa la fundamental en la plantilla
+    pesoQuinta: 1.1,      // ídem la quinta
     pesoBajo: 0.25,       // cuánto ayuda el bajo a elegir la fundamental
     minimo: 0.4,          // segundos: por debajo, el tramo se absorbe
   };
 
   /** Todo junto: audio a 22050 Hz mono → tramos con acorde. */
   async function reconocer(pcm, avisa) {
-    const act = await notas(pcm, (p) => avisa && avisa(p * 0.8, 'La red está oyendo las notas'));
-    if (!act.length) return { tramos: [], tono: null };
-
-    const { croma, bajo } = cromas(act, AJ.bloque);
+    const { croma, bajo, nCuadros } = await cromasDeLaRed(pcm, AJ.bloque,
+      (p) => avisa && avisa(p * 0.95, 'La red está oyendo las notas'));
+    if (!croma.length) return { tramos: [], tono: null };
     const voc = plantillas();
     const segsPorPaso = AJ.bloque / FPS;
 
@@ -326,8 +330,8 @@ const IA = (function () {
     }
 
     if (avisa) avisa(1, 'Listo');
-    return { tramos: limpio, tono, cuadros: act.length, fps: FPS };
+    return { tramos: limpio, tono, cuadros: nCuadros, fps: FPS };
   }
 
-  return { reconocer, cargar, RAICES, tonalidad };
+  return { reconocer, cargar, RAICES, tonalidad, AJ };
 })();

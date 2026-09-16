@@ -1,8 +1,11 @@
 # Reconocedor de acordes — página y APK
 
 Se le da un MP3 o un WAV y devuelve el cifrado. Trae **dos motores** y se
-cambia de uno a otro en un desplegable, porque cuál gana depende de la música y
-todavía no hay datos para decidirlo.
+cambia de uno a otro en un desplegable. Ya hay datos para decidir, y lo que
+dicen es que **el desplegable se queda**: medidos contra 99 loops con
+instrumentos reales empatan en el total (26,7 % y 26,4 % de acierto) pero
+fallan en sitios opuestos —el clásico se hunde en metal y rock, la red en
+reggae—. Las cifras y cómo se sacaron están en [`corpus/README.md`](../corpus/README.md).
 
 ## Los dos motores
 
@@ -51,7 +54,32 @@ Lo mismo que `motor/`, con sus constantes tal cual:
 El Viterbi es lo que separa un cifrado legible de una lista de ruido: sin él la
 salida parpadea en cada golpe de bombo.
 
-## Lo que sí está medido, y lo que ese número NO significa
+## Medido contra música real
+
+99 loops de More Than Modes tocados con batería, bajo, guitarra y teclas, cada
+uno con su cifrado escrito. CSR es la proporción de *tiempo* en el acorde
+correcto:
+
+| | acorde exacto | raíz | velocidad |
+|---|---|---|---|
+| clásico | 26,7 % | 58,5 % | 0,01× tiempo real |
+| red neuronal | 26,4 % | 61,9 % | 1,23× tiempo real |
+
+Tres cosas que salen de ahí, y que no se sabían antes:
+
+- **La red no gana.** Empata, y tarda cien veces más. La expectativa era otra.
+- **Se reparten los estilos**: metal 3,8 % el clásico contra 25,8 % la red;
+  rock 4,1 % contra 55,0 %; reggae 44,1 % contra 5,7 %. Por eso hay dos motores
+  y no uno.
+- **Lo que falla es la calidad, no la fundamental.** Las dos aciertan la raíz
+  seis veces de cada diez y el acorde entero sólo dos y media. El clásico pone
+  séptimas de más (`F:maj` → `F:maj7`), la red se las come (`B:min7` →
+  `B:min`). Ahí está el margen, y no en cambiar de modelo.
+
+`corpus/README.md` tiene el desglose por álbum, las confusiones más caras y un
+arreglo que se probó y **empeoró** las cifras, escrito para que nadie lo repita.
+
+## Lo que se mide al abrir, y lo que ese número NO significa
 
 La página abre analizando una progresión que sintetiza ella misma. Como la
 respuesta se conoce, se puede comprobar en vez de creérsela:
@@ -78,14 +106,18 @@ tramo de más —la red oye un si disminuido en la caída del sol séptima, que 
 literalmente lo que queda cuando se apaga la fundamental— desplazaba todo lo
 siguiente y daba 4 de 8 con siete acordes bien.
 
-## Lo que NO está medido
+## Lo que sigue sin estar medido
 
-**Nada con una mezcla real.** Ni una canción con batería, bajo y voz. Y no se
-puede saber mientras `corpus/` tenga cero ficheros `.lab`.
+Los 99 loops son loops: diez o veinte segundos, un acorde por compás, sin
+estructura y sin una voz delante. **Nada mide todavía una canción entera.** Y
+el cifrado de referencia es el que se escribió para tocar encima, no una
+transcripción de lo que suena: si la chuleta dice `Cm7` y el bajo no toca la
+séptima, la referencia pide algo que en el audio no está. Parte del hueco entre
+26 % y 62 % es eso y no fallo del motor; cuánta parte, no se sabe.
 
-Por eso la página exporta **`.lab` en formato Harte**: cada pista que se cifre
-aquí y se corrija a mano es una entrada de corpus, y con corpus el motor se
-puede medir de verdad — y comparar contra el camino neuronal.
+Por eso la página exporta **`.lab` en formato Harte**: cada canción que se
+cifre aquí y se corrija a mano entra en el corpus, y `corpus/evaluar.mjs` la
+recoge sin tocar nada.
 
 ## El APK
 

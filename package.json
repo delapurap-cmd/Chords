@@ -1,0 +1,12 @@
+{
+  "name": "chords-banco",
+  "private": true,
+  "description": "Dependencias del banco de pruebas: `corpus/evaluar.mjs` abre un Chromium para correr los motores tal como corren en la página. La app no depende de nada de esto.",
+  "scripts": {
+    "corpus": "python3 corpus/desde_mtm.py --repo ../more-than-modes",
+    "evaluar": "node corpus/evaluar.mjs --repo ../more-than-modes"
+  },
+  "dependencies": {
+    "playwright": "^1.63.0"
+  }
+}
