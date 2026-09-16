@@ -141,6 +141,15 @@
     font-size:12px;color:var(--tinta);background:var(--hueco);
     border:1px solid var(--borde-hueco);border-radius:2px;padding:9px;resize:vertical;
   }
+  .lbl-motor{font-size:11px;font-weight:800;letter-spacing:1.6px;
+             text-transform:uppercase;color:var(--tinta-baja)}
+  #motor{
+    font:inherit;font-weight:700;font-size:12.5px;color:var(--tinta);
+    background:var(--hueco);border:1px solid var(--borde-hueco);border-radius:2px;
+    box-shadow:0 1px 0 var(--hebra);padding:0 8px;min-height:40px;
+  }
+  #motor:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
+  .tono{font-size:12px;color:var(--oro);font-weight:700;letter-spacing:.4px}
   .nota{font-size:11.5px;color:var(--tinta-baja);line-height:1.55}
   .nota b{color:var(--tinta);font-weight:700}
   .nota code{font-family:ui-monospace,monospace;font-size:11px;color:var(--oro)}
@@ -166,6 +175,11 @@
     <div class="fila">
       <button class="pad rec" id="analizar" disabled>Reconocer acordes</button>
       <button class="pad" id="demo">Probar con un ejemplo</button>
+      <label class="lbl-motor" for="motor">Motor</label>
+      <select id="motor" aria-label="Motor de reconocimiento">
+        <option value="ia">Red neuronal (Basic Pitch)</option>
+        <option value="dsp">Clásico (cromagrama)</option>
+      </select>
     </div>
     <audio controls id="reproductor"></audio>
     <progress id="avance" max="100" value="0" hidden></progress>
@@ -222,8 +236,10 @@
 
 </div>
 
+<script src="vendor/tf.min.js"></script>
+<script src="ia.js"></script>
 <script>
-/* ── El motor, portado de `chords/motor` ─────────────────────────────────── */
+/* ── El motor clásico, portado de `chords/motor` ─────────────────────────────────── */
 const A = {
   fs: 11025, ventana: 4096, salto: 1024, notaMin: 24, notaMax: 96,
   permanencia: 0.96, temperatura: 0.08, umbralSilencio: 0.015,
@@ -414,7 +430,7 @@ async function analizar(pcm, avisa) {
 
 /* ── La página ───────────────────────────────────────────────────────────── */
 const $ = (id) => document.getElementById(id);
-const est = { pista: null, url: null, tramos: [], dur: 0, ocupado: false, formato: 'lab' };
+const est = { pista: null, url: null, tramos: [], dur: 0, ocupado: false, formato: 'lab', motor: 'ia', tono: null };
 const mmss = (t) => Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0') +
                     '.' + String(Math.floor((t % 1) * 10));
 
@@ -425,40 +441,52 @@ function di(txt, mal) {
 }
 
 /** Decodifica y deja PCM mono a 11025 Hz, con el remuestreador del navegador. */
-async function aPcm(fuente) {
+async function aPcm(fuente, fs) {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
   try {
     const buf = fuente instanceof AudioBuffer ? fuente
       : await ctx.decodeAudioData(await fuente.arrayBuffer());
     est.dur = buf.duration;
-    const off = new OfflineAudioContext(1, Math.max(1, Math.ceil(buf.duration * A.fs)), A.fs);
+    const off = new OfflineAudioContext(1, Math.max(1, Math.ceil(buf.duration * fs)), fs);
     const src = off.createBufferSource();
     src.buffer = buf; src.connect(off.destination); src.start();
     return (await off.startRendering()).getChannelData(0);
   } finally { ctx.close(); }
 }
 
-async function correr(fuente, nombre) {
+async function correr(fuente, nombre, motorForzado) {
   if (est.ocupado) return;
   est.ocupado = true;
   $('analizar').disabled = true; $('demo').disabled = true;
   $('avance').hidden = false; $('avance').value = 0;
   try {
+    const conIA = (motorForzado || est.motor) === 'ia';
     di('Preparando el audio…');
-    const pcm = await aPcm(fuente);
+    // La red quiere 22.050 Hz; el clásico trabaja a 11.025.
+    const pcm = await aPcm(fuente, conIA ? 22050 : A.fs);
     if (pcm.length < A.ventana) throw new Error('La pista es demasiado corta para analizarla.');
-    di('Buscando acordes…');
     const t0 = performance.now();
-    est.tramos = await analizar(pcm, (p) => {
-      $('avance').value = p * 100;
-      di('Buscando acordes… ' + Math.round(p * 100) + ' %');
-    });
+    est.tono = null;
+    if (conIA) {
+      di('Cargando la red…');
+      const r = await IA.reconocer(pcm, (p, q) => {
+        $('avance').value = p * 100;
+        di((q || 'Analizando') + '… ' + Math.round(p * 100) + ' %');
+      });
+      est.tramos = r.tramos; est.tono = r.tono;
+    } else {
+      est.tramos = await analizar(pcm, (p) => {
+        $('avance').value = p * 100;
+        di('Buscando acordes… ' + Math.round(p * 100) + ' %');
+      });
+    }
     const seg = (performance.now() - t0) / 1000;
     pintar();
     const conAcorde = est.tramos.filter((t) => t.harte !== 'N').length;
+    const tono = est.tono ? ` · tonalidad estimada ${IA.RAICES[est.tono.pc]}${est.tono.menor ? ' menor' : ' mayor'}` : '';
     di(`${nombre}: ${est.tramos.length} tramos (${conAcorde} con acorde) en ` +
-       `${est.dur.toFixed(1)} s de audio · analizado en ${seg.toFixed(1)} s. ` +
-       `Toca cualquier acorde para corregirlo.`);
+       `${est.dur.toFixed(1)} s de audio · ${conIA ? 'red neuronal' : 'motor clásico'} ` +
+       `en ${seg.toFixed(1)} s${tono}. Toca cualquier acorde para corregirlo.`);
   } catch (e) {
     console.error(e);
     di('No se pudo analizar: ' + (e && e.message ? e.message : e), true);
@@ -541,7 +569,9 @@ $('reproductor').addEventListener('seeked', seguir);
 const FORMATOS = {
   lab: () => est.tramos.map((t) => `${t.ini.toFixed(3)} ${t.fin.toFixed(3)} ${t.harte}`).join('\n'),
   json: () => JSON.stringify({
-    format: 'mtm-chords-v1', source: 'chords/motor v0 (cromagrama + plantillas + viterbi)',
+    format: 'mtm-chords-v1', source: est.motor === 'ia'
+      ? 'basic-pitch (notas) + plantillas, tonalidad y viterbi'
+      : 'chords/motor v0 (cromagrama + plantillas + viterbi)',
     title: est.pista ? est.pista.name : 'ejemplo', durationSeconds: +est.dur.toFixed(3),
     chords: est.tramos.map((t) => ({ start: +t.ini.toFixed(3), end: +t.fin.toFixed(3), chord: t.harte })),
   }, null, 2),
@@ -602,19 +632,42 @@ function sintetizar() {
   });
   return off.startRendering();
 }
-$('demo').addEventListener('click', async () => {
+async function probarEjemplo(motorForzado) {
   $('reproductor').removeAttribute('src');
   est.pista = null;
   di('Sintetizando la progresión de ejemplo…');
   const buf = await sintetizar();
-  await correr(buf, 'Ejemplo');
-  // La respuesta se conoce, así que se puede decir si acertó.
+  await correr(buf, 'Ejemplo', motorForzado);
+  /* Se puntúa POR TIEMPO, no posición a posición.
+
+     La primera versión comparaba las listas por índice, y con eso un solo
+     tramo de más —la red oye un si disminuido en la caída del sol séptima, que
+     es literalmente lo que queda cuando se apaga la fundamental— desplazaba
+     todo lo que venía detrás y daba 4 de 8 con los ocho acordes bien. Mentía
+     en contra, pero mentía.
+
+     Ahora se mira qué dice el motor en MITAD de cada acorde, que es donde
+     tiene que haberlo acertado. */
+  const DUR = 2.0;
   const esperado = EJEMPLO.map((e) => e[0]);
-  const salieron = est.tramos.filter((t) => t.harte !== 'N').map((t) => t.harte);
-  const unicos = salieron.filter((x, i) => i === 0 || x !== salieron[i - 1]);
-  const aciertos = esperado.filter((x, i) => unicos[i] === x).length;
-  di(`Ejemplo: se esperaban ${esperado.join(' ')} · salieron ${unicos.join(' ') || '(nada)'} — ` +
-     `${aciertos} de ${esperado.length} en su sitio.`);
+  const enElMedio = esperado.map((_, i) => {
+    const t = i * DUR + DUR / 2;
+    const s = est.tramos.find((x) => t >= x.ini && t < x.fin);
+    return s ? s.harte : '—';
+  });
+  const aciertos = esperado.filter((x, i) => enElMedio[i] === x).length;
+  const unicos = enElMedio;
+  const cual = (motorForzado || est.motor) === 'ia' ? 'red neuronal' : 'motor clásico';
+  di(`Ejemplo con ${cual}: se esperaban ${esperado.join(' ')} · salieron ` +
+     `${unicos.join(' ') || '(nada)'} — ${aciertos} de ${esperado.length} en su sitio.`);
+}
+$('demo').addEventListener('click', () => probarEjemplo());
+
+$('motor').addEventListener('change', (e) => {
+  est.motor = e.target.value;
+  di(est.motor === 'ia'
+    ? 'Red neuronal: Basic Pitch detecta las notas y la armonía las agrupa en acordes. Más lento y más fino.'
+    : 'Motor clásico: cromagrama de FFT y plantillas. Instantáneo, y se pierde con mezclas densas.');
 });
 
 $('archivo').addEventListener('change', (e) => {
@@ -628,8 +681,12 @@ $('archivo').addEventListener('change', (e) => {
 });
 $('analizar').addEventListener('click', () => est.pista && correr(est.pista, est.pista.name));
 
-// Abre enseñando lo que hace, no un formulario vacío.
-$('demo').click();
+/* Abre enseñando lo que hace, no un formulario vacío — pero con el motor
+   CLÁSICO, que es instantáneo. Arrancar con la red significaría que la página
+   tarda medio minuto en decir su primera palabra: la red se carga y se ejecuta
+   cuando alguien la pide, que es cuando compensa. El selector se queda en
+   «red neuronal», que es con lo que hay que analizar una canción de verdad. */
+probarEjemplo('dsp');
 </script>
 
 </body>
