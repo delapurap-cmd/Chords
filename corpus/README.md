@@ -90,6 +90,27 @@ descuento  0,00 → CSR 26,7 %    0,06 → 26,1 %    0,15 → 14,6 %
 dejarlo puesto con un número bonito. Queda escrito para que nadie lo vuelva a
 intentar creyendo que es obvio.
 
+## Un hilo que quedó a medio tirar
+
+Subir el peso de la fundamental en las plantillas de la red mejora, y bastante.
+Medido sobre una muestra de 25 pistas (`--paso 4`):
+
+```
+pesoRaiz 1,3 (el que está puesto) → CSR 22,7 %   ·   1,8 → 26,1 %
+         1,0                      →     20,9 %   ·   2,2 → 26,5 %
+         1,5                      →     23,4 %   ·   3,0 → 28,0 %
+```
+
+Tiene sentido: la red acierta la fundamental el 62 % del tiempo, así que
+apoyarse más en ella es fiarse de lo que la red hace bien. Y la curva **seguía
+subiendo** en 3,0, o sea que el óptimo está más arriba.
+
+**No se ha cambiado el valor por defecto**, por dos razones: está medido sobre
+una cuarta parte del corpus y no sobre las 99, y un peso tan alto empieza a ser
+«raíz + quinta y lo demás me da igual», que puede estar arreglando las cifras
+rompiendo el sentido musical. Quien lo retome: confirmar con
+`--motor ia --ajuste pesoRaiz=3` sobre el corpus entero antes de tocar `AJ`.
+
 ## Cómo está montada la medida
 
 `evaluar.mjs` levanta un servidor, abre Chromium y carga **los mismos

@@ -177,8 +177,14 @@
       <button class="pad" id="demo">Probar con un ejemplo</button>
       <label class="lbl-motor" for="motor">Motor</label>
       <select id="motor" aria-label="Motor de reconocimiento">
-        <option value="ia">Red neuronal (Basic Pitch)</option>
-        <option value="dsp">Clásico (cromagrama)</option>
+        <!-- El orden y las etiquetas salen de la medida contra los 99 loops
+             de More Than Modes: los dos motores empatan en el total (26,7 % y
+             26,4 % de acierto) pero se reparten los estilos, y elegir bien
+             según el material vale diez puntos —de 26 % a 37 %—. Un nombre de
+             modelo no ayuda a elegir; decir con qué material gana cada uno,
+             sí. -->
+        <option value="ia">Red neuronal · guitarra distorsionada</option>
+        <option value="dsp">Clásico · piano, teclas, guitarra limpia</option>
       </select>
     </div>
     <audio controls id="reproductor"></audio>
@@ -479,8 +485,8 @@ $('demo').addEventListener('click', () => probarEjemplo());
 $('motor').addEventListener('change', (e) => {
   est.motor = e.target.value;
   di(est.motor === 'ia'
-    ? 'Red neuronal: Basic Pitch detecta las notas y la armonía las agrupa en acordes. Más lento y más fino.'
-    : 'Motor clásico: cromagrama de FFT y plantillas. Instantáneo, y se pierde con mezclas densas.');
+    ? 'Red neuronal: Basic Pitch detecta las notas y la armonía las agrupa en acordes. Es el bueno con guitarra distorsionada —rock y metal—, y tarda lo que dura la canción.'
+    : 'Motor clásico: cromagrama de FFT y plantillas. Instantáneo, y el bueno con piano, teclas y guitarra limpia. Con distorsión se pierde.');
 });
 
 $('archivo').addEventListener('change', (e) => {
