@@ -1,0 +1,5 @@
+# El proyecto Android lo genera `cap add android` en cada compilación: son 54
+# ficheros que nadie edita y que sólo sirven para desfasarse.
+android/
+www/
+node_modules/

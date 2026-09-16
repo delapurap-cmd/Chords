@@ -1,0 +1,11 @@
+{
+  "appId": "com.morethanmodes.acordes",
+  "appName": "MTM Acordes",
+  "webDir": "www",
+  "backgroundColor": "#171918",
+  "android": {
+    "backgroundColor": "#171918",
+    "allowMixedContent": false,
+    "webContentsDebuggingEnabled": true
+  }
+}
